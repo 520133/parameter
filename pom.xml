@@ -16,6 +16,7 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <commons-lang3.version>3.1</commons-lang3.version>
     </properties>
 
     <dependencies>
@@ -41,10 +42,33 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.47</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ej-commom</groupId>
+            <artifactId>ej-commom</artifactId>
+            <version>2.5.12</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/ej-commom-2.5.12-RELEASE.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <build>
         <finalName>ip</finalName>
+        <resources>
+            <resource>
+                <directory>lib</directory>
+                <targetPath>BOOT-INF/lib/</targetPath>
+                <includes>
+                    <include>**/*.jar</include>
+                </includes>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

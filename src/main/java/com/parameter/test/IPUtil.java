@@ -60,7 +60,10 @@ public class IPUtil {
     }
 
     public static void main(String[] args) {
-        System.out.println(getCityInfo("117.176.210.170"));
+        System.out.println(getCityInfo("223.104.215.170"));
+        String[] split = getCityInfo("223.104.215.170").split("\\|");
+        System.out.println(split[2]);
+        System.out.println(split[3]);
     }
 
 }

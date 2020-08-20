@@ -55,7 +55,7 @@ public class IpController {
     public String addUser(@RequestBody @Valid UserEntity user) {
         return "success";
     }
-    
+
     @PostMapping("/getName")
     public String getName(@Valid @NotNull(message = "请传入用户姓名") String name) {
         return "success";

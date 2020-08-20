@@ -1,4 +1,4 @@
-package com.parameter.Util;
+package com.parameter.util;
 
 import lombok.Getter;
 
