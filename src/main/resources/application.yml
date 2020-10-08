@@ -1,2 +1,15 @@
 server:
   port: 8080
+spring:
+  rabbitmq:
+    host: 120.55.101.228
+    port: 5672
+    username: root
+    password: yunliantao123
+    publisher-confirms: true
+    publisher-returns: true
+    listener:
+      simple:
+        acknowledge-mode: manual
+        retry:
+          enabled: true

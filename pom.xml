@@ -56,6 +56,12 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/ej-commom-2.5.12-RELEASE.jar</systemPath>
         </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

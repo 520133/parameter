@@ -1,16 +1,22 @@
 package com.parameter.controller;
 
 import com.parameter.entity.UserEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
+import com.parameter.util.ConfirmCallbackService;
+import com.parameter.util.ReturnCallbackService;
+import org.springframework.amqp.core.MessageDeliveryMode;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 /**
  * @author 杨森霖
@@ -48,13 +54,34 @@ public class IpController {
         }
         return ip;
     }
+    @Autowired
+    private ConfirmCallbackService confirmCallbackService;
+
+    @Autowired
+    private ReturnCallbackService returnCallbackService;
 
 
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+    @PostConstruct
+    public void initRabbitTemplate(){
 
+        rabbitTemplate.setMandatory(true);
+        rabbitTemplate.setConfirmCallback(confirmCallbackService);
+        rabbitTemplate.setReturnCallback(returnCallbackService);
+    }
     @PostMapping("/addUser")
     public String addUser(@RequestBody @Valid UserEntity user) {
+        rabbitTemplate.convertAndSend("confirm_test_queue",
+                "confirm_test_queue",
+                "hello",
+                message -> {
+                    message.getMessageProperties().setDeliveryMode(MessageDeliveryMode.PERSISTENT);
+                    return message;
+                });
         return "success";
     }
+
 
     @PostMapping("/getName")
     public String getName(@Valid @NotNull(message = "请传入用户姓名") String name) {
