@@ -33,12 +33,12 @@ public class RabbitmqConfig {
         return new FanoutExchange("confirmTestExchange");
     }
 
-    @Bean
-    public Binding confirmTestFanoutExchangeAndQueue(
-            @Qualifier("confirmTestExchange") FanoutExchange confirmTestExchange,
-            @Qualifier("confirmTestQueue") Queue confirmTestQueue) {
-        return BindingBuilder.bind(confirmTestQueue).to(confirmTestExchange);
-    }
+//    @Bean
+//    public Binding confirmTestFanoutExchangeAndQueue(
+//            @Qualifier("confirmTestExchange") FanoutExchange confirmTestExchange,
+//            @Qualifier("confirmTestQueue") Queue confirmTestQueue) {
+//        return BindingBuilder.bind(confirmTestQueue).to(confirmTestExchange);
+//    }
 
 
 
