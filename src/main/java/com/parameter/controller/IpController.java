@@ -1,18 +1,17 @@
 package com.parameter.controller;
 
 import com.parameter.entity.UserEntity;
-import com.parameter.util.ConfirmCallbackService;
-import com.parameter.util.ReturnCallbackService;
 import org.springframework.amqp.core.MessageDeliveryMode;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -54,31 +53,23 @@ public class IpController {
         }
         return ip;
     }
-    @Autowired
-    private ConfirmCallbackService confirmCallbackService;
-
-    @Autowired
-    private ReturnCallbackService returnCallbackService;
 
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
-    @PostConstruct
-    public void initRabbitTemplate(){
 
-        rabbitTemplate.setMandatory(true);
-        rabbitTemplate.setConfirmCallback(confirmCallbackService);
-        rabbitTemplate.setReturnCallback(returnCallbackService);
-    }
     @PostMapping("/addUser")
+    @Transactional(rollbackFor = Exception.class)
     public String addUser(@RequestBody @Valid UserEntity user) {
-        rabbitTemplate.convertAndSend("confirm_test_queue",
+        //推送信息
+        rabbitTemplate.convertAndSend("confirmTestExchange",
                 "confirm_test_queue",
                 "hello",
                 message -> {
                     message.getMessageProperties().setDeliveryMode(MessageDeliveryMode.PERSISTENT);
                     return message;
-                });
+                },new CorrelationData(UUID.randomUUID().toString()));
+
         return "success";
     }
 

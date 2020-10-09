@@ -7,6 +7,10 @@ import com.parameter.binding.Util;
 
 import java.io.File;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * @author 杨森霖
@@ -60,10 +64,64 @@ public class IPUtil {
     }
 
     public static void main(String[] args) {
-        System.out.println(getCityInfo("223.104.215.170"));
-        String[] split = getCityInfo("223.104.215.170").split("\\|");
-        System.out.println(split[2]);
-        System.out.println(split[3]);
+        testLambda();
     }
 
+    public static int cmp(Comparator comparator, int i, int j) {
+        return comparator.compare(i, j);
+    }
+
+    public static void testJava() {
+        //传递一个对象
+        int cmp = cmp(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o1 + o2;
+            }
+        }, 1, 2);
+        System.out.println(cmp);
+    }
+
+    public static void testLambda() {
+        int cmp = cmp((Comparator<Integer>)(o1,o2)->o1*o2,1,2);
+        System.out.println(cmp);
+    }
+
+}
+
+@FunctionalInterface
+interface Consumer<T> {
+
+    /**
+     * @param t 输入参数
+     */
+    void accept(T t);
+
+    //……
+}
+
+class ConsumerTest {
+
+    public static void main(String[] args) {
+        //一个初始化集合
+        List<Integer> objects = new ArrayList<>();
+        objects.add(1);
+        objects.add(2);
+        objects.add(3);
+
+        //对集合数据进行  加1然后输出的操作
+        consume(objects, i -> System.out.println(i + 1));
+    }
+
+    /**
+     * 使用Consumer对集合元素进行操作的方法
+     *
+     * @param list     需要操作的集合
+     * @param consumer 对元素的具体的操作，在调用的时候传递某个动作就行了
+     */
+    private static <T> void consume(List<T> list, Consumer<T> consumer) {
+        for (T t : list) {
+            consumer.accept(t);
+        }
+    }
 }

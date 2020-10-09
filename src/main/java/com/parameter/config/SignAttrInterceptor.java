@@ -2,6 +2,7 @@ package com.parameter.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -9,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @author 杨森霖
  * @author 2020/8/20 0020 下午 15:22
  */
-@Configurable
+@Configuration
 public class SignAttrInterceptor implements WebMvcConfigurer {
 
 

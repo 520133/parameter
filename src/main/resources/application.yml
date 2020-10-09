@@ -6,10 +6,26 @@ spring:
     port: 5672
     username: root
     password: yunliantao123
-    publisher-confirms: true
+    publisher-confirm-type: correlated
     publisher-returns: true
     listener:
       simple:
         acknowledge-mode: manual
         retry:
           enabled: true
+    template:
+      mandatory: true
+  mail:
+    host: smtp.qq.com
+    username: 920817943@qq.com
+    password: ddbyvccexjnvbffc
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+  thymeleaf:
+    mode: LEGACYHTML5
+    cache: false

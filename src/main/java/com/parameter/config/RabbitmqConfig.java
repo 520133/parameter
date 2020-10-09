@@ -1,24 +1,31 @@
 package com.parameter.config;
 
-import com.parameter.util.ConfirmCallbackService;
-import com.parameter.util.ReturnCallbackService;
+import com.parameter.util.mq.ConfirmCallbackService;
+import com.parameter.util.mq.ReturnCallbackService;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.annotation.PostConstruct;
+
 @Configuration
 public class RabbitmqConfig {
+
+    @Autowired
+    private ConfirmCallbackService confirmCallbackService;
+
+    @Autowired
+    private ReturnCallbackService returnCallbackService;
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     @Bean
     public Queue confirmTestQueue() {
         return new Queue("confirm_test_queue", true, false, false);
-    }
-
-    @Bean
-    public TopicExchange topicExchange001() {
-        return new TopicExchange("confirm_test_queue", true, false);
     }
 
     @Bean
@@ -34,4 +41,11 @@ public class RabbitmqConfig {
     }
 
 
+
+    @PostConstruct
+    public void initRabbitTemplate(){
+        rabbitTemplate.setMandatory(true);
+        rabbitTemplate.setConfirmCallback(confirmCallbackService);
+        rabbitTemplate.setReturnCallback(returnCallbackService);
+    }
 }

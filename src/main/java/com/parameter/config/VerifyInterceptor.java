@@ -2,7 +2,9 @@ package com.parameter.config;
 
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.parameter.util.ParcelDataPackage;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,10 +27,11 @@ public class VerifyInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object handler) throws Exception {
 
-        RequestWrapper myRequestWrapper = new RequestWrapper(request);
-
-        Map map = (Map) JSON.parse(myRequestWrapper.getBodyString());
-
+//        RequestWrapper myRequestWrapper = new RequestWrapper(request);
+//
+//        Map map = (Map) JSON.parse(myRequestWrapper.getBodyString());
+//        ParcelDataPackage rd = new ParcelDataPackage();
+//        rd.setData(map);
 
         return true;
     }

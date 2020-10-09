@@ -1,4 +1,4 @@
-package com.parameter.util;
+package com.parameter.util.mq;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
